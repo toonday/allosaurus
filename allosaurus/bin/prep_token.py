@@ -3,10 +3,12 @@ from pathlib import Path
 from allosaurus.model import resolve_model_name
 from allosaurus.lm.inventory import *
 from tqdm import tqdm
+from allosaurus.global_config import model_download_path
 
 def prepare_token(data_path, model, lang_id):
 
-    model_path = Path(__file__).parent.parent / 'pretrained' / model
+    model_path = Path(__file__).parent.parent if model_download_path == "" else Path(model_download_path)
+    model_path = model_path / 'pretrained' / model
 
     #assert model_path.exists(), f"{model} is not a valid model"
 

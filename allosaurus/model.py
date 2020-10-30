@@ -1,5 +1,6 @@
 from pathlib import Path
 import shutil
+from allosaurus.global_config import model_download_path
 
 def get_all_models():
     """
@@ -7,7 +8,8 @@ def get_all_models():
 
     :return:
     """
-    model_dir = Path(__file__).parent / 'pretrained'
+    model_path = Path(__file__).parent if model_download_path == "" else Path(model_download_path)
+    model_dir = model_path / 'pretrained'
     models = list(sorted(model_dir.glob('*'), reverse=True))
 
     #assert len(models) > 0, "No models are available, you can maually download a model with download command or just run inference to download the latest one automatically"

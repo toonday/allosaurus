@@ -5,10 +5,12 @@ from allosaurus.audio import read_audio
 from allosaurus.pm.factory import read_pm
 from allosaurus.pm.kdict import KaldiWriter
 from tqdm import tqdm
+from allosaurus.global_config import model_download_path
 
 def prepare_feature(data_path, model):
 
-    model_path = Path(__file__).parent.parent / 'pretrained' / model
+    model_path = Path(__file__).parent.parent if model_download_path == "" else Path(model_download_path)
+    model_path = model_path / 'pretrained' / model
 
     # create pm (pm stands for preprocess model: audio -> feature etc..)
     pm = read_pm(model_path, None)

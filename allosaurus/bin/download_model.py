@@ -4,13 +4,15 @@ from urllib.request import urlopen
 import io
 import argparse
 import os
+from allosaurus.global_config import model_download_path
 
 def download_model(model_name=None):
 
     if model_name is None:
         model_name = 'latest'
 
-    model_dir = (Path(__file__).parent.parent) / 'pretrained'
+    model_path = Path(__file__).parent.parent if model_download_path == "" else Path(model_download_path)
+    model_dir = model_path / 'pretrained'
 
     if not (model_dir / model_name).exists():
 
