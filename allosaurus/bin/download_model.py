@@ -5,12 +5,13 @@ import io
 import argparse
 import os
 
-def download_model(model_name=None):
+def download_model(download_path, model_name=None):
 
     if model_name is None:
         model_name = 'latest'
 
-    model_dir = (Path(__file__).parent.parent) / 'pretrained'
+    model_path = Path(__file__).parent.parent if download_path == "" else Path(download_path)
+    model_dir = model_path / 'pretrained'
 
     if not (model_dir / model_name).exists():
 

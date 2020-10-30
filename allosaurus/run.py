@@ -13,12 +13,13 @@ if __name__ == '__main__':
     parser.add_argument('-i', '--input', type=str, required=True, help='specify your input wav file/directory')
     parser.add_argument('-o', '--output', type=str, default='stdout', help='specify output file. the default will be stdout')
     parser.add_argument('-a', '--approximate', type=bool, default=False, help='the phone inventory can still hardly to cover all phones. You can use turn on this flag to map missing phones to other similar phones to recognize. The similarity is measured with phonological features')
+    parser.add_argument('-p', '--path', type=str, required=True, help='specify a custom location to save the downloaded model')
 
     args = parser.parse_args()
 
     # download specified model automatically if no model exists
-    if len(get_all_models()) == 0:
-        download_model('latest')
+    if len(get_all_models(args.path)) == 0:
+        download_model(args.path, 'latest')
 
     # resolve model's name
     model_name = resolve_model_name(args.model)

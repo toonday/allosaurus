@@ -1,20 +1,21 @@
 from pathlib import Path
 import shutil
 
-def get_all_models():
+def get_all_models(download_path):
     """
     get all local models
 
     :return:
     """
-    model_dir = Path(__file__).parent / 'pretrained'
+    model_path = Path(__file__).parent if download_path == "" else Path(download_path)
+    model_dir = model_path / 'pretrained'
     models = list(sorted(model_dir.glob('*'), reverse=True))
 
     #assert len(models) > 0, "No models are available, you can maually download a model with download command or just run inference to download the latest one automatically"
 
     return models
 
-def get_model_path(model_name):
+def get_model_path(download_path, model_name):
     """
     get model path by name, verify its a valid path
 
@@ -22,7 +23,8 @@ def get_model_path(model_name):
     :return: model path
     """
 
-    model_dir = Path(__file__).parent / 'pretrained'
+    model_path = Path(__file__).parent if download_path == "" else Path(download_path)
+    model_dir = model_path / 'pretrained'
 
     resolved_model_name = resolve_model_name(model_name)
 
@@ -30,7 +32,7 @@ def get_model_path(model_name):
 
     return model_dir / resolved_model_name
 
-def copy_model(src_model_name, tgt_model_name):
+def copy_model(download_path, src_model_name, tgt_model_name):
     """
     copy a model to a new model
 
@@ -40,10 +42,11 @@ def copy_model(src_model_name, tgt_model_name):
     """
 
     # verify the source path is not empty
-    src_model_path = get_model_path(src_model_name)
+    src_model_path = get_model_path(download_path, src_model_name)
 
     # verify the target path is empty
-    model_dir = Path(__file__).parent / 'pretrained'
+    model_path = Path(__file__).parent if download_path == "" else Path(download_path)
+    model_dir = model_path / 'pretrained'
     tgt_model_path = model_dir / tgt_model_name
 
     assert not tgt_model_path.exists(), \
@@ -51,9 +54,9 @@ def copy_model(src_model_name, tgt_model_name):
 
     shutil.copytree(str(src_model_path), str(tgt_model_path))
 
-def delete_model(model_name):
+def delete_model(download_path, model_name):
 
-    model_path = get_model_path(model_name)
+    model_path = get_model_path(download_path, model_name)
 
     answer = input(f"you will delete {model_path}? [Y|N]")
     if answer.lower() in ['y', 'yes', 'true']:
@@ -61,7 +64,7 @@ def delete_model(model_name):
         shutil.rmtree(str(model_path))
 
 
-def resolve_model_name(model_name='latest'):
+def resolve_model_name(download_path, model_name='latest'):
     """
     select the model
 
@@ -69,7 +72,7 @@ def resolve_model_name(model_name='latest'):
     :return:
     """
 
-    models = get_all_models()
+    models = get_all_models(download_path)
 
     # get the latest model in local
     if model_name == 'latest':
