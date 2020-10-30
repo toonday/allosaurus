@@ -5,12 +5,12 @@ from allosaurus.pm.factory import read_pm
 from allosaurus.am.factory import read_am
 from allosaurus.lm.factory import read_lm
 from allosaurus.bin.download_model import download_model
-from allosaurus.global_config import model_download_path
+import allosaurus.global_config as glc
 
 
 def read_recognizer(inference_config):
 
-    model_path = Path(__file__).parent if model_download_path == "" else Path(model_download_path)
+    model_path = Path(__file__).parent if glc.model_download_path == "" else Path(glc.model_download_path)
     model_path = model_path / 'pretrained' / inference_config.model
 
     if inference_config.model == 'latest' and not model_path.exists():

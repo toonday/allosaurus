@@ -3,7 +3,7 @@ from allosaurus.model import get_all_models, resolve_model_name
 from allosaurus.bin.download_model import download_model
 from pathlib import Path
 import argparse
-from allosaurus.global_config import model_download_path
+import allosaurus.global_config as glc
 
 if __name__ == '__main__':
 
@@ -17,7 +17,7 @@ if __name__ == '__main__':
     parser.add_argument('-mp', '--model_path', type=str, default='', help='model path')
 
     args = parser.parse_args()
-    model_download_path = args.model_path
+    glc.model_download_path = args.model_path
 
     # download specified model automatically if no model exists
     if len(get_all_models()) == 0:

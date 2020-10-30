@@ -4,14 +4,15 @@ from urllib.request import urlopen
 import io
 import argparse
 import os
-from allosaurus.global_config import model_download_path
+import allosaurus.global_config as glc
 
 def download_model(model_name=None):
 
     if model_name is None:
         model_name = 'latest'
 
-    model_path = Path(__file__).parent.parent if model_download_path == "" else Path(model_download_path)
+    print("xx " + glc.model_download_path + " xx")
+    model_path = Path(__file__).parent.parent if glc.model_download_path == "" else Path(glc.model_download_path)
     model_dir = model_path / 'pretrained'
 
     if not (model_dir / model_name).exists():

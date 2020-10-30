@@ -1,6 +1,6 @@
 from pathlib import Path
 import shutil
-from allosaurus.global_config import model_download_path
+import allosaurus.global_config as glc
 
 def get_all_models():
     """
@@ -8,7 +8,7 @@ def get_all_models():
 
     :return:
     """
-    model_path = Path(__file__).parent if model_download_path == "" else Path(model_download_path)
+    model_path = Path(__file__).parent if glc.model_download_path == "" else Path(glc.model_download_path)
     model_dir = model_path / 'pretrained'
     models = list(sorted(model_dir.glob('*'), reverse=True))
 
@@ -24,7 +24,8 @@ def get_model_path(model_name):
     :return: model path
     """
 
-    model_dir = Path(__file__).parent / 'pretrained'
+    model_path = Path(__file__).parent if glc.model_download_path == "" else Path(glc.model_download_path)
+    model_dir = model_path / 'pretrained'
 
     resolved_model_name = resolve_model_name(model_name)
 
@@ -45,7 +46,8 @@ def copy_model(src_model_name, tgt_model_name):
     src_model_path = get_model_path(src_model_name)
 
     # verify the target path is empty
-    model_dir = Path(__file__).parent / 'pretrained'
+    model_path = Path(__file__).parent if glc.model_download_path == "" else Path(glc.model_download_path)
+    model_dir = model_path / 'pretrained'
     tgt_model_path = model_dir / tgt_model_name
 
     assert not tgt_model_path.exists(), \
